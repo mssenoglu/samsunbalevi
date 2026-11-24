@@ -1,0 +1,117 @@
+/* Tasarım token'ları — tüm renk, boşluk, font değerleri buradan gelir. */
+:root {
+  /* Renkler: sıcak krem zemin + bal/amber ana renk */
+  --color-bg: #fbf8f2;
+  --color-surface: #f3ede1;
+  --color-surface-raised: #ffffff;
+  --color-text: #231d14;
+  --color-text-muted: #6b6152;
+  --color-border: #e4dccb;
+  --color-primary: #a85d0b;
+  --color-primary-hover: #8c4c07;
+  --color-on-primary: #ffffff;
+  --color-accent: #f2b705;
+  --color-on-image: #ffffff;
+  --color-bark: #6b4a2b;
+  --color-leaf: #5f8a3a;
+  --color-leaf-light: #86ad55;
+  --color-honey: #e8a317;
+  --on-image-rgb: 255 255 255;
+  --scrim-rgb: 20 15 8;
+  --color-success: #2f7a3c;
+  --color-warning: #b26b00;
+  --color-danger: #b3261e;
+  --color-danger-surface: #fbe9e7;
+  --color-success-surface: #e6f2e7;
+
+  /* Boşluk ölçeği (4px tabanlı) */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-20: 80px; --space-24: 96px; --space-32: 128px;
+
+  /* Yuvarlaklık */
+  --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px; --radius-full: 9999px;
+
+  /* Gölge */
+  --shadow-sm: 0 1px 2px rgb(35 29 20 / 0.06);
+  --shadow-md: 0 8px 24px rgb(35 29 20 / 0.10);
+
+  /* Tipografi */
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --text-xs: 0.75rem; --text-sm: 0.875rem; --text-base: 1rem; --text-lg: 1.125rem;
+  --text-xl: 1.25rem; --text-2xl: 1.5rem; --text-3xl: 1.875rem; --text-4xl: 2.25rem;
+
+  /* Hareket */
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  --dur-fast: 150ms;
+  --dur-med: 250ms;
+
+  /* Yerleşim */
+  --container: 1200px;
+  --gutter: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  :root { --gutter: var(--space-8); }
+}
+
+/* Site her zaman açık renk paletini kullanır */
+:root { color-scheme: light; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Ortak temel */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: 1.6;
+}
+img { max-width: 100%; height: auto; display: block; }
+:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+a { color: var(--color-primary); }
+a:hover { color: var(--color-primary-hover); }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Butonlar */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 44px; padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-full); border: 1px solid transparent;
+  font: 600 var(--text-sm)/1.2 var(--font-sans); text-decoration: none; cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled, .btn[aria-busy="true"] { opacity: 0.55; cursor: not-allowed; }
+.btn svg { width: 20px; height: 20px; flex: none; }
+.btn--primary { background: var(--color-primary); color: var(--color-on-primary); }
+.btn--primary:hover:not(:disabled) { background: var(--color-primary-hover); color: var(--color-on-primary); }
+.btn--secondary { background: transparent; color: var(--color-text); border-color: var(--color-border); }
+.btn--secondary:hover:not(:disabled) { border-color: var(--color-text-muted); color: var(--color-text); }
+.btn--ghost { background: transparent; color: var(--color-text-muted); padding-inline: var(--space-3); }
+.btn--ghost:hover:not(:disabled) { color: var(--color-text); background: var(--color-surface); }
+.btn--danger { background: transparent; color: var(--color-danger); border-color: var(--color-border); }
+.btn--danger:hover:not(:disabled) { border-color: var(--color-danger); color: var(--color-danger); }
+.btn[aria-busy="true"]::after {
+  content: ""; width: 14px; height: 14px; border-radius: 50%;
+  border: 2px solid currentColor; border-right-color: transparent;
+  animation: spin 700ms linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.btn[hidden] { display: none; }

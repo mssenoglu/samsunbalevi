@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KVKK Aydınlatma Metni — Balevi</title>
+  <link rel="icon" href="/img/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css?v=16">
+  <link rel="stylesheet" href="/css/site.css?v=16">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="/" class="brand">
+        <img src="/img/logo.webp" alt="Balevi — ana sayfa" width="361" height="400" class="brand__logo">
+      </a>
+      <a href="/" class="btn btn--ghost">← Ana sayfaya dön</a>
+    </div>
+  </header>
+
+  <main class="section">
+    <article class="container legal">
+      <h1>KVKK Aydınlatma Metni</h1>
+      <div id="legal-text" class="legal__body" aria-live="polite">
+        <p class="muted">Yükleniyor…</p>
+      </div>
+    </article>
+  </main>
+
+  <script>
+    (async () => {
+      const box = document.getElementById("legal-text");
+      const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+      try {
+        const { settings } = await (await fetch("/api/content")).json();
+        const blocks = String(settings.privacyText || "").split(/\n\s*\n/).filter(Boolean);
+        if (!blocks.length) {
+          box.innerHTML = '<p class="muted">Aydınlatma metni henüz eklenmedi.</p>';
+          return;
+        }
+        // "1. Başlık" ile başlayan paragrafların ilk satırı ara başlık olur.
+        box.innerHTML = blocks.map((b) => {
+          const [first, ...rest] = b.split("\n");
+          if (/^\d+\.\s/.test(first)) {
+            return `<h2>${esc(first)}</h2>` + (rest.length ? `<p>${esc(rest.join("\n"))}</p>` : "");
+          }
+          return `<p>${esc(b)}</p>`;
+        }).join("");
+      } catch {
+        box.innerHTML = '<p class="state state--error" role="alert">⚠ Metin yüklenemedi. Lütfen sayfayı yenileyin.</p>';
+      }
+    })();
+  </script>
+</body>
+</html>

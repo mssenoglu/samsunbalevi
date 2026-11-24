@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Bakımdayız — Balevi</title>
+  <link rel="icon" href="/img/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css?v=16">
+  <style>
+    body { min-height: 100dvh; display: grid; place-items: center; padding: var(--space-6) var(--space-4); position: relative; overflow-x: hidden; }
+    /* Arka planda hafif petek deseni */
+    body::before {
+      content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+      background-color: var(--color-accent); opacity: 0.14;
+      -webkit-mask-image: url("/img/honeycomb.svg"); -webkit-mask-size: 48.5px 84px;
+      mask-image: url("/img/honeycomb.svg"); mask-size: 48.5px 84px;
+    }
+    .maint {
+      width: 100%; max-width: 560px; text-align: center; display: grid; justify-items: center; gap: var(--space-5);
+      background: var(--color-surface-raised); border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg); padding: var(--space-10) var(--space-6);
+    }
+    .maint__logo { width: 120px; height: auto; }
+    .maint__badge {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: var(--text-sm); font-weight: 600; color: var(--color-primary);
+    }
+    .maint__badge::before {
+      content: ""; width: 10px; height: 12px; background: var(--color-accent);
+      clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+    }
+    h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(1.875rem, 6vw, 2.5rem); line-height: 1.15; letter-spacing: -0.015em; margin: 0; }
+    .maint__text { color: var(--color-text-muted); font-size: var(--text-lg); margin: 0; max-width: 46ch; white-space: pre-line; }
+    .maint__contact { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--space-3); margin-top: var(--space-2); }
+    .maint__contact[hidden] { display: none; }
+    @media (min-width: 640px) { .maint { padding: var(--space-12) var(--space-10); } }
+  </style>
+</head>
+<body>
+  <main class="maint">
+    <img class="maint__logo" src="/img/logo.webp" alt="Balevi" width="361" height="400">
+    <span class="maint__badge">Bakım çalışması</span>
+    <h1>Kısa bir aradayız</h1>
+    <p class="maint__text" id="maint-text">Sitemizi sizin için yeniliyoruz. Kısa süre içinde yeniden buradayız.</p>
+    <div class="maint__contact" id="maint-contact" hidden>
+      <a class="btn btn--primary" id="maint-whatsapp" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+        WhatsApp'tan yazın
+      </a>
+      <a class="btn btn--secondary" id="maint-phone" href="#" hidden>Bizi arayın</a>
+    </div>
+  </main>
+  <script>
+    (async () => {
+      try {
+        const { settings: s } = await (await fetch("/api/content", { cache: "no-store" })).json();
+        if (s.maintenanceMessage) document.getElementById("maint-text").textContent = s.maintenanceMessage;
+        const wa = String(s.whatsapp || "").replace(/\D/g, "");
+        const tel = String(s.phone || "").replace(/[^\d+]/g, "");
+        if (wa) document.getElementById("maint-whatsapp").href = "https://wa.me/" + wa;
+        else document.getElementById("maint-whatsapp").hidden = true;
+        if (tel) {
+          const p = document.getElementById("maint-phone");
+          p.href = "tel:" + tel;
+          p.hidden = false;
+        }
+        document.getElementById("maint-contact").hidden = !wa && !tel;
+        // Bakım bittiyse ziyaretçiyi siteye geri götür
+        if (!s.maintenanceMode) location.replace("/");
+      } catch (e) {}
+    })();
+  </script>
+</body>
+</html>

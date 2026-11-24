@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Balevi — Doğal Bal</title>
+  <meta name="description" content="Kendi arılıklarımızda ürettiğimiz katkısız çiçek, kestane ve petek balları.">
+  <link rel="icon" href="/img/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css?v=16">
+  <link rel="stylesheet" href="/css/site.css?v=16">
+  <script>
+    // İçerik gelmezse bile giriş bölümü en geç 2,5 sn sonra görünür
+    setTimeout(function () { document.documentElement.classList.add("content-ready"); }, 2500);
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">İçeriğe geç</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a href="#giris" class="brand">
+        <img src="/img/logo.webp" alt="Balevi — ana sayfa" width="361" height="400" class="brand__logo">
+      </a>
+      <nav id="site-nav" class="site-nav" aria-label="Ana menü">
+        <a href="#giris">Giriş</a>
+        <a href="#urunler">Ürünler</a>
+        <a href="#hakkimizda">Hakkımızda</a>
+        <a href="#iletisim">İletişim</a>
+      </nav>
+      <div class="header-actions">
+        <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+          <span class="visually-hidden">Menüyü aç</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="giris" aria-label="Giriş">
+      <div class="hero__pattern" aria-hidden="true"></div>
+      <!-- Dolu petek gözleri ve üstten sarkan bal: hero-deco.js çizer -->
+      <svg class="hero__comb" id="hero-comb" aria-hidden="true"></svg>
+      <svg class="hero__drips" id="hero-drips" aria-hidden="true"></svg>
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <p class="eyebrow hero__eyebrow" data-field="heroEyebrow">Doğal · Katkısız · Soğuk süzme</p>
+          <h1 data-field="heroTitle">Yaylalardan sofranıza, katkısız bal</h1>
+          <p class="lead" data-field="heroText"></p>
+
+          <div class="hero__actions">
+            <!-- Bal kavanozu: ürünlere götürür -->
+            <a class="icon-link icon-link--jar" href="#urunler">
+              <svg class="jar" viewBox="0 0 80 100" aria-hidden="true">
+                <defs>
+                  <clipPath id="jar-inside"><path d="M14 30h52v52a10 10 0 0 1-10 10H24a10 10 0 0 1-10-10z"/></clipPath>
+                </defs>
+                <rect class="jar__lid" x="16" y="6" width="48" height="14" rx="3"/>
+                <path class="jar__lid-line" d="M22 11v4M30 11v4M38 11v4M46 11v4M54 11v4"/>
+                <rect class="jar__neck" x="20" y="20" width="40" height="8" rx="2"/>
+                <g clip-path="url(#jar-inside)">
+                  <g class="jar__honey">
+                    <path d="M0 46c10-5 20 5 30 0s20-5 30 0 20 5 30 0 20 5 30 0V100H0z"/>
+                  </g>
+                </g>
+                <path class="jar__glass" d="M14 30h52v52a10 10 0 0 1-10 10H24a10 10 0 0 1-10-10z"/>
+                <path class="jar__label" d="M40 52l9 5.2v10.4L40 72.8l-9-5.2V57.2z"/>
+                <path class="jar__shine" d="M21 40v34"/>
+              </svg>
+              <span class="icon-link__text">Ürünlerimiz</span>
+            </a>
+
+            <!-- Altıgen WhatsApp -->
+            <a class="icon-link icon-link--hex js-whatsapp" href="#iletisim" target="_blank" rel="noopener">
+              <svg class="hex" viewBox="0 0 100 100" aria-hidden="true">
+                <path class="hex__shape" d="M50 4l40 23v46L50 96 10 73V27z"/>
+                <g class="hex__glyph" transform="translate(26 26) scale(2)">
+                  <path d="M6.6 20.2A9.4 9.4 0 1 0 3.2 16.9L2 22z" fill="none" stroke-width="1.6" stroke-linejoin="round"/>
+                  <path d="M9 8.3c.2-.5.5-.5.8-.5h.5c.2 0 .4.1.5.4l.7 1.7c.1.2 0 .4-.1.6l-.5.6c-.1.1-.2.3 0 .5.5.9 1.2 1.6 2.1 2.1.2.1.4.1.5 0l.6-.7c.2-.2.4-.2.6-.1l1.6.8c.2.1.3.3.3.5 0 .6-.3 1.3-.9 1.6-.6.3-1.5.4-2.9-.2a8.6 8.6 0 0 1-3.6-3.3c-.7-1.1-.8-2.1-.6-2.8.1-.5.3-.8.4-1.2z" stroke="none"/>
+                </g>
+              </svg>
+              <span class="icon-link__text">WhatsApp</span>
+            </a>
+          </div>
+        </div>
+        <div class="hero__visual" id="hero-visual">
+          <div class="hero__frame">
+                      </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="urunler" aria-labelledby="urunler-baslik">
+      <div class="container">
+        <header class="section__head">
+          <h2 id="urunler-baslik" data-field="productsTitle">Ürünlerimiz</h2>
+          <p class="muted" data-field="productsText"></p>
+        </header>
+        <div id="product-list" aria-live="polite">
+          <div class="product-grid">
+            <div class="product-card skeleton"><div class="skeleton__media"></div><div class="skeleton__line"></div><div class="skeleton__line skeleton__line--short"></div></div>
+            <div class="product-card skeleton"><div class="skeleton__media"></div><div class="skeleton__line"></div><div class="skeleton__line skeleton__line--short"></div></div>
+            <div class="product-card skeleton"><div class="skeleton__media"></div><div class="skeleton__line"></div><div class="skeleton__line skeleton__line--short"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--surface" id="hakkimizda" aria-labelledby="koken-baslik">
+      <div class="container">
+        <div class="origin">
+          <p class="eyebrow">Ballarımızın yolculuğu</p>
+          <h2 id="koken-baslik" data-field="originTitle">Anadolu'nun dört bir yanından Samsun'a</h2>
+          <div class="origin__map" id="origin-map"></div>
+          <p class="origin__text" data-field="originText"></p>
+        </div>
+
+        <div class="about">
+          <div>
+            <p class="eyebrow">Hakkımızda</p>
+            <h2 id="hakkimizda-baslik" data-field="aboutTitle">Üç kuşaktır arıcılık</h2>
+          </div>
+          <div class="prose" id="about-text"></div>
+        </div>
+
+        <!-- Galeri: solda kayan ana fotoğraflar (tıklayınca detay), sağda sabit yan fotoğraflar -->
+        <div class="gallery" id="about-gallery" hidden>
+          <div class="slider" id="about-slider" aria-roledescription="carousel" aria-label="Balevi'den kareler" hidden>
+            <div class="slider__viewport">
+              <div class="slider__track" id="slider-track"></div>
+              <button class="slider__arrow slider__arrow--prev" type="button" data-dir="-1" aria-label="Önceki fotoğraf">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+              </button>
+              <button class="slider__arrow slider__arrow--next" type="button" data-dir="1" aria-label="Sonraki fotoğraf">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+              </button>
+              <div class="slider__dots" id="slider-dots"></div>
+            </div>
+          </div>
+          <div class="side-photos" id="side-photos" hidden></div>
+        </div>
+
+        <!-- Fotoğraf detayı -->
+        <dialog class="photo-detail" id="photo-detail" aria-labelledby="photo-detail-title">
+          <button class="photo-detail__close" type="button" data-close aria-label="Kapat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+          <div class="photo-detail__media"><img id="photo-detail-img" alt=""></div>
+          <div class="photo-detail__body">
+            <h3 id="photo-detail-title"></h3>
+            <div class="photo-detail__text" id="photo-detail-text"></div>
+          </div>
+        </dialog>
+      </div>
+    </section>
+
+    <section class="section" id="iletisim" aria-labelledby="iletisim-baslik">
+      <div class="container contact">
+        <div class="contact__info">
+          <p class="eyebrow">İletişim</p>
+          <h2 id="iletisim-baslik">Dükkânımıza bekleriz</h2>
+          <dl class="contact-list">
+            <div data-contact="address">
+              <dt>Adres</dt>
+              <dd data-field="address"></dd>
+            </div>
+            <div data-contact="phone">
+              <dt>Telefon</dt>
+              <dd><a id="contact-phone" href="#"></a></dd>
+            </div>
+            <div data-contact="email">
+              <dt>E-posta</dt>
+              <dd><a id="contact-email" href="#"></a></dd>
+            </div>
+            <div data-contact="hours">
+              <dt>Çalışma saatleri</dt>
+              <dd data-field="hours" class="pre-line"></dd>
+            </div>
+            <div id="contact-instagram-row" data-contact="instagram">
+              <dt>Instagram</dt>
+              <dd><a id="contact-instagram" href="#" target="_blank" rel="noopener"></a></dd>
+            </div>
+          </dl>
+          <a class="btn btn--primary js-whatsapp" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>
+            WhatsApp'tan iletişime geçin
+          </a>
+        </div>
+        <div class="contact__map">
+          <iframe id="map" title="Dükkân konumu — Google Haritalar" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          <a id="map-link" class="map-link" href="#" target="_blank" rel="noopener">Yol tarifi al</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand">
+        <img src="/img/logo.webp" alt="" width="361" height="400" loading="lazy">
+        <p>© <span id="year"></span> <span data-field="shopName">Balevi</span>. Tüm hakları saklıdır.</p>
+      </div>
+      <nav class="site-footer__links" aria-label="Alt menü">
+        <a href="/aydinlatma-metni">KVKK Aydınlatma Metni</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script src="/js/image-view.js?v=16" defer></script>
+  <script src="/js/origin-map.js?v=16" defer></script>
+  <script src="/js/site.js?v=16" defer></script>
+  <script src="/js/hero-deco.js?v=16" defer></script>
+</body>
+</html>

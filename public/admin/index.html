@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Yönetim Paneli — Balevi</title>
+  <link rel="icon" href="/img/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
+  <link rel="stylesheet" href="/css/tokens.css?v=16">
+  <link rel="stylesheet" href="/admin/admin.css?v=16">
+</head>
+<body>
+  <!-- Giriş -->
+  <main id="login-view" class="login" hidden>
+    <form id="login-form" class="login__card" novalidate>
+      <img src="/img/logo.webp" alt="Balevi" width="361" height="400" class="login__logo">
+      <h1>Yönetim paneli</h1>
+      <p class="muted">Ürünleri, fotoğrafları ve iletişim bilgilerini buradan düzenleyebilirsiniz.</p>
+      <div class="field">
+        <label for="password">Şifre</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" required aria-describedby="login-error">
+        <p class="field__error" id="login-error" role="alert"></p>
+      </div>
+      <button class="btn btn--primary btn--block" type="submit">Giriş yap</button>
+      <a href="/" class="back-link">← Siteye dön</a>
+    </form>
+  </main>
+
+  <!-- Panel -->
+  <div id="app-view" hidden>
+    <header class="topbar">
+      <div class="topbar__inner">
+        <span class="topbar__title">
+          <img src="/img/logo-bee.webp" alt="" width="263" height="256">
+          Yönetim paneli
+        </span>
+        <div class="topbar__actions">
+          <button class="maint-switch" type="button" role="switch" id="maint-switch" aria-checked="false" aria-describedby="maint-switch-state">
+            <span class="maint-switch__track" aria-hidden="true"><span class="maint-switch__thumb"></span></span>
+            <span class="maint-switch__label">Bakım modu</span>
+            <span class="maint-switch__state" id="maint-switch-state">Kapalı</span>
+          </button>
+          <a class="btn btn--ghost" href="/" target="_blank" rel="noopener">Siteyi görüntüle</a>
+          <button class="btn btn--secondary" type="button" id="logout">Çıkış yap</button>
+        </div>
+      </div>
+      <nav class="tabs" role="tablist" aria-label="Panel bölümleri">
+        <button role="tab" id="tab-home" aria-controls="panel-home" aria-selected="true">Ana sayfa</button>
+        <button role="tab" id="tab-products" aria-controls="panel-products" aria-selected="false" tabindex="-1">Ürünler</button>
+        <button role="tab" id="tab-about" aria-controls="panel-about" aria-selected="false" tabindex="-1">Hakkımızda</button>
+        <button role="tab" id="tab-settings" aria-controls="panel-settings" aria-selected="false" tabindex="-1">Site ve iletişim</button>
+      </nav>
+    </header>
+
+    <main class="admin-main">
+      <!-- ANA SAYFA -->
+      <section role="tabpanel" id="panel-home" aria-labelledby="tab-home">
+        <div class="panel-head">
+          <div>
+            <h2>Ana sayfa</h2>
+            <p class="muted">Sitenin en üstünde görünen giriş bölümü.</p>
+          </div>
+        </div>
+
+        <div class="card hero-image-card">
+          <div class="hero-image-card__preview" id="hero-preview"></div>
+          <div class="form-grid">
+            <div>
+              <h3 class="card-title">Giriş fotoğrafı</h3>
+              <p class="field__hint">Metnin sağında görünür. Fotoğraf yüklenmezse bal peteği çizimi gösterilir. Dikey fotoğraflar en iyi sonucu verir.</p>
+            </div>
+            <form id="hero-image-form" class="field">
+              <label for="hero-file">Yeni fotoğraf seç</label>
+              <input id="hero-file" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/avif">
+              <div class="form-actions form-actions--start">
+                <button class="btn btn--secondary" type="submit">Fotoğrafı yükle</button>
+                <button class="btn btn--secondary" type="button" id="hero-image-adjust">Görseli ayarla</button>
+                <button class="btn btn--danger" type="button" id="hero-image-remove">Fotoğrafı kaldır</button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <form class="card form-grid" data-settings-form>
+          <h3 class="card-title">Giriş metinleri</h3>
+          <div class="field">
+            <label for="s-heroEyebrow">Üst satır</label>
+            <input id="s-heroEyebrow" name="heroEyebrow" type="text" placeholder="Doğal · Katkısız · Soğuk süzme">
+          </div>
+          <div class="field">
+            <label for="s-heroTitle">Ana başlık</label>
+            <input id="s-heroTitle" name="heroTitle" type="text">
+          </div>
+          <div class="field">
+            <label for="s-heroText">Tanıtım metni</label>
+            <textarea id="s-heroText" name="heroText" rows="3"></textarea>
+          </div>
+          <div class="form-actions"><button class="btn btn--primary" type="submit">Metinleri kaydet</button></div>
+        </form>
+      </section>
+
+      <!-- ÜRÜNLER -->
+      <section role="tabpanel" id="panel-products" aria-labelledby="tab-products" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>Ürünler</h2>
+            <p class="muted">Ürünler sitede kategorilere göre gruplanır. Sıralamayı oklarla değiştirebilirsiniz.</p>
+          </div>
+          <button class="btn btn--primary" type="button" id="add-product">Yeni ürün ekle</button>
+        </div>
+
+        <form class="card form-grid" data-settings-form>
+          <h3 class="card-title">Bölüm başlığı</h3>
+          <div class="field-row">
+            <div class="field">
+              <label for="s-productsTitle">Başlık</label>
+              <input id="s-productsTitle" name="productsTitle" type="text">
+            </div>
+            <div class="field">
+              <label for="s-productsText">Alt yazı</label>
+              <input id="s-productsText" name="productsText" type="text">
+            </div>
+          </div>
+          <div class="form-actions"><button class="btn btn--secondary" type="submit">Başlığı kaydet</button></div>
+        </form>
+
+        <h3 class="subhead">Kategoriler</h3>
+        <p class="muted subhead__text">Sitede ürünlerin üstünde alt başlık olarak görünür (örn. "Ballarımız", "Arı ürünleri").</p>
+        <ul class="item-list" id="admin-categories"></ul>
+        <form class="card cat-add" id="category-add-form" novalidate>
+          <div class="field">
+            <label for="cat-name">Yeni kategori adı</label>
+            <input id="cat-name" name="name" type="text" required placeholder="Örn. Reçeller">
+          </div>
+          <div class="field">
+            <label for="cat-desc">Kısa açıklama (isteğe bağlı)</label>
+            <input id="cat-desc" name="description" type="text">
+          </div>
+          <div class="form-actions"><button class="btn btn--secondary" type="submit">Kategori ekle</button></div>
+        </form>
+
+        <h3 class="subhead">Ürün listesi</h3>
+        <div id="admin-products"></div>
+      </section>
+
+      <!-- HAKKIMIZDA -->
+      <section role="tabpanel" id="panel-about" aria-labelledby="tab-about" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>Hakkımızda</h2>
+            <p class="muted">İki bölümden oluşur: üstte balların geldiği iller haritası, altında hakkımızda metni ve fotoğraf galerisi.</p>
+          </div>
+        </div>
+
+        <form class="card form-grid" data-settings-form>
+          <h3 class="card-title">Harita bölümü (üst kısım)</h3>
+          <p class="field__hint">Haritada 21 ilden Samsun'a oklar çizilir. Haritanın üstünde başlık, altında açıklama görünür.</p>
+          <div class="field">
+            <label for="s-originTitle">Harita başlığı</label>
+            <input id="s-originTitle" name="originTitle" type="text">
+          </div>
+          <div class="field">
+            <label for="s-originText">Harita açıklaması</label>
+            <textarea id="s-originText" name="originText" rows="3"></textarea>
+          </div>
+          <div class="form-actions"><button class="btn btn--primary" type="submit">Harita metinlerini kaydet</button></div>
+        </form>
+
+        <h3 class="subhead">Hakkımızda metni (alt kısım)</h3>
+
+        <form class="card form-grid" data-settings-form>
+          <div class="field">
+            <label for="s-aboutTitle">Başlık</label>
+            <input id="s-aboutTitle" name="aboutTitle" type="text">
+          </div>
+          <div class="field">
+            <label for="s-aboutText">Metin</label>
+            <textarea id="s-aboutText" name="aboutText" rows="7"></textarea>
+            <p class="field__hint">Paragrafları boş bir satırla ayırın.</p>
+          </div>
+          <div class="form-actions"><button class="btn btn--primary" type="submit">Metni kaydet</button></div>
+        </form>
+
+        <h3 class="subhead">Ana galeri (solda kayan büyük fotoğraflar)</h3>
+        <p class="muted subhead__text">Fotoğrafın altında yalnızca başlık küçük olarak görünür. Ziyaretçi fotoğrafa tıklayınca fotoğraf, başlık ve detaylı açıklama açılır. Yatay fotoğraflar en iyi sonucu verir.</p>
+        <form class="card upload-form" id="about-upload-form">
+          <div class="field upload-form__file">
+            <label for="about-file">Fotoğraf</label>
+            <input id="about-file" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" required>
+            <p class="field__hint">JPG, PNG veya WebP · en fazla 8 MB</p>
+          </div>
+          <div class="field upload-form__file">
+            <label for="about-title">Başlık</label>
+            <input id="about-title" name="title" type="text" placeholder="Örn. Artvin yaylasındaki arılığımız">
+          </div>
+          <div class="field upload-form__file">
+            <label for="about-desc">Detaylı açıklama</label>
+            <textarea id="about-desc" name="description" rows="5" placeholder="Bu fotoğrafın hikâyesini anlatın. Paragrafları boş bir satırla ayırın."></textarea>
+          </div>
+          <div class="form-actions"><button class="btn btn--secondary" type="submit">Fotoğraf yükle</button></div>
+        </form>
+        <ul class="photo-grid" id="admin-photos"></ul>
+
+        <h3 class="subhead">Yan fotoğraf (sağda sabit duran dikey fotoğraf)</h3>
+        <p class="muted subhead__text">Açıklamasız, ana galerinin sağında tek başına durur. Dikey (portre) bir fotoğraf seçin. Yeni yüklediğiniz fotoğraf eskisinin yerini alır.</p>
+        <form class="card upload-form" id="side-upload-form">
+          <div class="field upload-form__file">
+            <label for="side-file">Fotoğraf</label>
+            <input id="side-file" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/avif" required>
+            <p class="field__hint">JPG, PNG veya WebP · en fazla 8 MB</p>
+          </div>
+          <div class="form-actions"><button class="btn btn--secondary" type="submit">Fotoğrafı yükle / değiştir</button></div>
+        </form>
+        <ul class="photo-grid" id="admin-side-photos"></ul>
+      </section>
+
+      <!-- AYARLAR -->
+      <section role="tabpanel" id="panel-settings" aria-labelledby="tab-settings" hidden>
+        <div class="panel-head">
+          <div>
+            <h2>Site ve iletişim</h2>
+            <p class="muted">İletişim bilgileri, harita konumu ve aydınlatma metni.</p>
+          </div>
+        </div>
+        <form class="card form-grid" data-settings-form>
+          <fieldset>
+            <legend>Genel</legend>
+            <div class="field">
+              <label for="s-shopName">Dükkân adı</label>
+              <input id="s-shopName" name="shopName" type="text">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>İletişim</legend>
+            <div class="field-row">
+              <div class="field">
+                <label for="s-phone">Telefon</label>
+                <input id="s-phone" name="phone" type="tel" autocomplete="tel">
+              </div>
+              <div class="field">
+                <label for="s-whatsapp">WhatsApp numarası</label>
+                <input id="s-whatsapp" name="whatsapp" type="tel" inputmode="numeric" aria-describedby="s-whatsapp-hint">
+                <p class="field__hint" id="s-whatsapp-hint">Ülke koduyla, boşluksuz: 905321234567</p>
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="s-email">E-posta</label>
+                <input id="s-email" name="email" type="email" autocomplete="email">
+              </div>
+              <div class="field">
+                <label for="s-instagram">Instagram kullanıcı adı</label>
+                <input id="s-instagram" name="instagram" type="text" placeholder="balevi">
+              </div>
+            </div>
+            <div class="field">
+              <label for="s-address">Adres</label>
+              <input id="s-address" name="address" type="text" autocomplete="street-address">
+            </div>
+            <div class="field">
+              <label for="s-hours">Çalışma saatleri</label>
+              <textarea id="s-hours" name="hours" rows="3"></textarea>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Harita</legend>
+            <div class="field">
+              <label for="s-mapQuery">Google Haritalar'da aranacak konum</label>
+              <input id="s-mapQuery" name="mapQuery" type="text" aria-describedby="s-map-hint">
+              <p class="field__hint" id="s-map-hint">Dükkânın Google'daki adını, adresini veya koordinatını yazın (örn. 41.2867, 36.33).</p>
+            </div>
+            <iframe id="map-preview" class="map-preview" title="Harita önizlemesi" loading="lazy"></iframe>
+          </fieldset>
+
+          <fieldset>
+            <legend>Bakım modu mesajı</legend>
+            <div class="field">
+              <label for="s-maintenanceMessage">Ziyaretçilere gösterilecek yazı</label>
+              <textarea id="s-maintenanceMessage" name="maintenanceMessage" rows="3" aria-describedby="s-maint-hint"></textarea>
+              <p class="field__hint" id="s-maint-hint">Üst bardaki "Bakım modu" düğmesi açıkken sitenin yerine bu yazı, logonuz ve WhatsApp/telefon düğmeleri görünür. Siz panelde oturum açıkken siteyi normal görmeye devam edersiniz.</p>
+            </div>
+            <a href="/bakim" target="_blank" rel="noopener" class="inline-link">Bakım sayfasını önizle →</a>
+          </fieldset>
+
+          <fieldset>
+            <legend>KVKK aydınlatma metni</legend>
+            <div class="field">
+              <label for="s-privacyText">Metin</label>
+              <textarea id="s-privacyText" name="privacyText" rows="14" aria-describedby="s-privacy-hint"></textarea>
+              <p class="field__hint" id="s-privacy-hint">Köşeli parantezli yerleri kendi bilgilerinizle doldurun. "1. Başlık" ile başlayan satırlar sitede ara başlık olur. Yayına almadan önce bir hukukçuya kontrol ettirmeniz önerilir.</p>
+            </div>
+            <a href="/aydinlatma-metni" target="_blank" rel="noopener" class="inline-link">Sitedeki hâlini görüntüle →</a>
+          </fieldset>
+
+          <div class="form-actions"><button class="btn btn--primary" type="submit">Değişiklikleri kaydet</button></div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <!-- Ürün formu -->
+  <dialog id="product-dialog" class="dialog" aria-labelledby="product-dialog-title">
+    <form id="product-form" class="form-grid" novalidate>
+      <div class="dialog__head">
+        <h2 id="product-dialog-title">Yeni ürün</h2>
+        <button type="button" class="btn btn--ghost icon-btn" data-close aria-label="Kapat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="image-picker">
+        <div class="image-picker__preview" id="product-preview"></div>
+        <div class="field">
+          <label for="p-image">Ürün fotoğrafı</label>
+          <input id="p-image" name="image" type="file" accept="image/jpeg,image/png,image/webp,image/avif">
+          <p class="field__hint">Dikey (4:5) fotoğraflar en iyi sonucu verir.</p>
+          <label class="check" id="p-remove-wrap" hidden><input type="checkbox" name="removeImage" value="true"> Mevcut fotoğrafı kaldır</label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="p-name">Ürün adı</label>
+        <input id="p-name" name="name" type="text" required aria-describedby="p-name-error">
+        <p class="field__error" id="p-name-error"></p>
+      </div>
+      <div class="field">
+        <label for="p-category">Kategori</label>
+        <select id="p-category" name="categoryId"></select>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="p-price">Fiyat (₺)</label>
+          <input id="p-price" name="price" type="number" min="0" step="0.01" inputmode="decimal" required aria-describedby="p-price-error">
+          <p class="field__error" id="p-price-error"></p>
+        </div>
+        <div class="field">
+          <label for="p-unit">Miktar / birim</label>
+          <input id="p-unit" name="unit" type="text" placeholder="850 g kavanoz">
+        </div>
+      </div>
+      <div class="field">
+        <label for="p-description">Açıklama</label>
+        <textarea id="p-description" name="description" rows="4"></textarea>
+      </div>
+      <div class="field">
+        <label for="p-region">Yöresi</label>
+        <input id="p-region" name="region" type="text" placeholder="Örn. Artvin, Karadeniz yaylaları">
+      </div>
+      <div class="field">
+        <label for="p-benefits">Faydaları</label>
+        <textarea id="p-benefits" name="benefits" rows="4" aria-describedby="p-benefits-hint"></textarea>
+        <p class="field__hint" id="p-benefits-hint">Her satıra bir fayda yazın; sitede madde madde görünür.</p>
+      </div>
+      <label class="check"><input type="checkbox" name="inStock" id="p-inStock" checked> Stokta var</label>
+
+      <p class="form-error" id="product-form-error" role="alert"></p>
+      <div class="form-actions">
+        <button type="button" class="btn btn--secondary" data-close>Vazgeç</button>
+        <button type="submit" class="btn btn--primary">Ürünü kaydet</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Görsel ayarlama -->
+  <dialog id="image-editor" class="dialog dialog--wide" aria-labelledby="image-editor-title">
+    <form id="image-editor-form" class="form-grid" method="dialog">
+      <div class="dialog__head">
+        <h2 id="image-editor-title">Görseli ayarla</h2>
+        <button type="button" class="btn btn--ghost icon-btn" data-close aria-label="Kapat">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <p class="field__hint">Önizleme, görselin sitede görüneceği çerçeveyi gösterir. Görseli sürükleyerek de kaydırabilirsiniz.</p>
+
+      <div class="editor">
+        <div class="editor__frame" id="editor-frame">
+          <img id="editor-img" alt="Ayarlanan görselin önizlemesi" draggable="false">
+        </div>
+
+        <div class="editor__controls">
+          <div class="field">
+            <span class="label">Yerleşim</span>
+            <div class="segmented" role="group" aria-label="Yerleşim">
+              <button type="button" data-mode="cover" aria-pressed="true">Çerçeveyi doldur</button>
+              <button type="button" data-mode="contain" aria-pressed="false">Tamamını sığdır</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="editor-zoom">Yakınlaştırma <output id="editor-zoom-out">%100</output></label>
+            <div class="zoom-row">
+              <button type="button" class="btn btn--secondary icon-btn" data-zoom="-0.1" aria-label="Küçült">−</button>
+              <input id="editor-zoom" type="range" min="1" max="3" step="0.05" value="1">
+              <button type="button" class="btn btn--secondary icon-btn" data-zoom="0.1" aria-label="Büyüt">+</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="editor-x">Yatay konum</label>
+            <input id="editor-x" type="range" min="0" max="100" step="1" value="50">
+          </div>
+          <div class="field">
+            <label for="editor-y">Dikey konum</label>
+            <input id="editor-y" type="range" min="0" max="100" step="1" value="50">
+          </div>
+
+          <button type="button" class="btn btn--secondary" id="editor-center">Ortala</button>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn--ghost" id="editor-reset">Sıfırla</button>
+        <button type="button" class="btn btn--secondary" data-close>Vazgeç</button>
+        <button type="submit" class="btn btn--primary">Ayarı kaydet</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/js/image-view.js?v=16" defer></script>
+  <script src="/admin/admin.js?v=16" defer></script>
+</body>
+</html>

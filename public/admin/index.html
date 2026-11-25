@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap&subset=latin-ext" rel="stylesheet">
-  <link rel="stylesheet" href="/css/tokens.css?v=16">
-  <link rel="stylesheet" href="/admin/admin.css?v=16">
+  <link rel="stylesheet" href="/css/tokens.css?v=20">
+  <link rel="stylesheet" href="/admin/admin.css?v=20">
 </head>
 <body>
   <!-- Giriş -->
@@ -93,6 +93,11 @@
           <div class="field">
             <label for="s-heroTitle">Ana başlık</label>
             <input id="s-heroTitle" name="heroTitle" type="text">
+          </div>
+          <div class="field">
+            <label for="s-heroSubtitle">Başlığın altındaki satır</label>
+            <input id="s-heroSubtitle" name="heroSubtitle" type="text" placeholder="Samsun Balevi'nde" aria-describedby="s-heroSubtitle-hint">
+            <p class="field__hint" id="s-heroSubtitle-hint">Büyük başlığın hemen altında, bal renginde görünür. Boş bırakırsanız sitede hiç görünmez.</p>
           </div>
           <div class="field">
             <label for="s-heroText">Tanıtım metni</label>
@@ -268,13 +273,62 @@
           </fieldset>
 
           <fieldset>
-            <legend>Harita</legend>
+            <legend>Harita konumu (Google Haritalar)</legend>
             <div class="field">
-              <label for="s-mapQuery">Google Haritalar'da aranacak konum</label>
+              <label for="s-mapQuery">Google Haritalar'daki dükkân adı ve adresi</label>
               <input id="s-mapQuery" name="mapQuery" type="text" aria-describedby="s-map-hint">
-              <p class="field__hint" id="s-map-hint">Dükkânın Google'daki adını, adresini veya koordinatını yazın (örn. 41.2867, 36.33).</p>
+              <p class="field__hint" id="s-map-hint">Dükkânınız Google Haritalar'da kayıtlıysa önce kayıtlı adını, sonra adresini yazın (örn. "Samsun Bal Evi, Kasaplar Cd., Pazar, İlkadım, Samsun"). Böylece haritada başka dükkân değil, sizin kaydınız çıkar. Aşağıdaki önizleme sitede görünecek haritadır.</p>
             </div>
+            <div class="field">
+              <label for="s-mapLink">Google Haritalar bağlantısı (önerilen)</label>
+              <input id="s-mapLink" name="mapLink" type="url" aria-describedby="s-mapLink-hint">
+              <p class="field__hint" id="s-mapLink-hint">Google Haritalar'da dükkânınızın kaydını açıp adres çubuğundaki bağlantıyı buraya yapıştırın. Bağlantı girildiğinde haritada doğrudan sizin kaydınız (adı ve iğnesiyle) görünür; yukarıdaki yazı yalnızca yedek olarak kullanılır.</p>
+              <p class="field__error" id="s-mapLink-error" role="alert"></p>
+            </div>
+            <input type="hidden" name="mapPlaceId" id="s-mapPlaceId">
+            <input type="hidden" name="mapLat" id="s-mapLat">
+            <input type="hidden" name="mapLng" id="s-mapLng">
             <iframe id="map-preview" class="map-preview" title="Harita önizlemesi" loading="lazy"></iframe>
+          </fieldset>
+
+          <fieldset>
+            <legend>Arama motorları (SEO) ve yerel arama</legend>
+            <p class="field__hint">Google ve yapay zekâ destekli arama motorlarında sitenizin nasıl görüneceğini belirler. Boş bırakılan alanlar için site içeriğinden otomatik değer kullanılır.</p>
+            <div class="field">
+              <label for="s-seoTitle">Arama sonucu başlığı <output class="char-count" data-count-for="s-seoTitle" data-max="60"></output></label>
+              <input id="s-seoTitle" name="seoTitle" type="text" placeholder="Balevi — Samsun'da doğal ve katkısız bal">
+            </div>
+            <div class="field">
+              <label for="s-seoDescription">Arama sonucu açıklaması <output class="char-count" data-count-for="s-seoDescription" data-max="160"></output></label>
+              <textarea id="s-seoDescription" name="seoDescription" rows="3" placeholder="Samsun'daki dükkânımızda Kastamonu, Erzurum ve Bitlis yaylalarından katkısız kestane, çiçek ve geven balı. WhatsApp'tan sipariş verin."></textarea>
+            </div>
+            <div class="serp" aria-label="Google'da görünüm önizlemesi">
+              <span class="serp__url" id="serp-url"></span>
+              <span class="serp__title" id="serp-title"></span>
+              <span class="serp__desc" id="serp-desc"></span>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="s-geoCity">Şehir</label>
+                <input id="s-geoCity" name="geoCity" type="text" placeholder="Samsun">
+              </div>
+              <div class="field">
+                <label for="s-postalCode">Posta kodu</label>
+                <input id="s-postalCode" name="postalCode" type="text" inputmode="numeric" autocomplete="postal-code" placeholder="55200">
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="s-geoRegion">İl kodu</label>
+                <input id="s-geoRegion" name="geoRegion" type="text" placeholder="TR-55" aria-describedby="s-geoRegion-hint">
+                <p class="field__hint" id="s-geoRegion-hint">"TR-" ve plaka kodu. Samsun için TR-55.</p>
+              </div>
+              <div class="field">
+                <label for="s-siteUrl">Sitenin adresi</label>
+                <input id="s-siteUrl" name="siteUrl" type="url" placeholder="https://www.balevi.com.tr" aria-describedby="s-siteUrl-hint">
+                <p class="field__hint" id="s-siteUrl-hint">Site yayına alınınca alan adını yazın.</p>
+              </div>
+            </div>
           </fieldset>
 
           <fieldset>
@@ -423,7 +477,8 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="/js/image-view.js?v=16" defer></script>
-  <script src="/admin/admin.js?v=16" defer></script>
+  <script src="/js/image-view.js?v=20" defer></script>
+  <script src="/admin/admin.js?v=20" defer></script>
+  <script src="/admin/location-seo.js?v=20" defer></script>
 </body>
 </html>

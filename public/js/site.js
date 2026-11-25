@@ -39,7 +39,7 @@ function productCard(p, settings) {
         <span class="product-card__price">${priceFmt.format(p.price)}</span>
       </div>
       ${p.unit ? `<span class="product-card__unit">${esc(p.unit)}</span>` : ""}
-      <p class="product-card__desc">${esc(p.description)}</p>
+      ${p.description ? `<p class="product-card__desc">${esc(p.description)}</p>` : ""}
       ${productExtras(p)}
     </div>
   </article>`;
@@ -300,8 +300,15 @@ function renderContact(s) {
 
   document.querySelectorAll(".js-whatsapp").forEach((a) => (a.href = waLink(s.whatsapp, "Merhaba, ürünleriniz hakkında bilgi almak istiyorum.")));
 
-  const q = encodeURIComponent(s.mapQuery || s.address || "");
-  document.getElementById("map").src = `https://www.google.com/maps?q=${q}&output=embed`;
+  // Panelde haritadan işaretlenen konum varsa iğne tam o noktaya konur
+  const lat = Number(s.mapLat), lng = Number(s.mapLng);
+  const hasPin = s.mapLat && s.mapLng && Number.isFinite(lat) && Number.isFinite(lng);
+  const q = encodeURIComponent(hasPin ? `${lat},${lng}` : s.mapQuery || s.address || "");
+  // Google Haritalar kaydı bağlıysa harita doğrudan dükkânın kendi kaydını (adı ve iğnesiyle) gösterir
+  const placeId = /^\d+$/.test(String(s.mapPlaceId || "")) ? s.mapPlaceId : "";
+  document.getElementById("map").src = placeId
+    ? `https://maps.google.com/maps?cid=${placeId}&z=17&output=embed`
+    : `https://www.google.com/maps?q=${q}&z=${hasPin ? 17 : 15}&output=embed`;
   document.getElementById("map-link").href = `https://www.google.com/maps/dir/?api=1&destination=${q}`;
 }
 
@@ -315,8 +322,9 @@ async function init() {
     document.querySelectorAll("[data-field]").forEach((el) => {
       const v = settings[el.dataset.field];
       if (v) el.textContent = v;
+      // İsteğe bağlı alanlar panelde boş bırakılırsa hiç yer kaplamaz
+      else if (el.hasAttribute("data-optional")) el.hidden = true;
     });
-    if (settings.shopName) document.title = `${settings.shopName} — Doğal Bal`;
     // Bakım modu açıkken siteyi yalnızca panele giriş yapmış yönetici görür; ona hatırlatma göster
     if (settings.maintenanceMode) {
       const note = document.createElement("div");

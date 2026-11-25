@@ -6,6 +6,7 @@ const multer = require("multer");
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
+const seo = require("./seo");
 
 // Gizli ayarlar proje klasöründeki .env dosyasından okunur (git'e eklenmez)
 const ENV_FILE = path.join(__dirname, ".env");
@@ -51,6 +52,7 @@ const SEED = {
     shopName: "Balevi",
     heroEyebrow: "Doğal · Katkısız · Soğuk süzme",
     heroTitle: "Yaylalardan sofranıza, katkısız bal",
+    heroSubtitle: "Samsun Balevi'nde",
     heroText:
       "Kendi arılıklarımızda üretip süzdüğümüz çiçek, kestane ve petek ballarını dükkânımızda ve sipariş üzerine sizlere ulaştırıyoruz.",
     heroImage: "",
@@ -69,6 +71,16 @@ const SEED = {
     hours: "Pazartesi – Cumartesi: 09:00 – 19:00\nPazar: Kapalı",
     instagram: "balevi",
     mapQuery: "Moda Caddesi, Kadıköy, İstanbul",
+    mapLink: "",
+    mapPlaceId: "",
+    mapLat: "",
+    mapLng: "",
+    seoTitle: "",
+    seoDescription: "",
+    siteUrl: "",
+    geoCity: "Samsun",
+    geoRegion: "TR-55",
+    postalCode: "",
     privacyText: PRIVACY_TEMPLATE,
     maintenanceMode: false,
     maintenanceMessage:
@@ -215,6 +227,17 @@ app.use((req, res, next) => {
   res.status(503).set("Retry-After", "3600").set("Cache-Control", "no-store");
   res.sendFile(path.join(__dirname, "public", "bakim.html"));
 });
+// Ana sayfa: arama motorları için başlık, açıklama, konum ve yapılandırılmış veri sunucuda eklenir
+app.get(["/", "/index.html"], (req, res) => {
+  res.set("Cache-Control", "no-cache").type("html").send(seo.renderIndex(db, req));
+});
+app.get("/robots.txt", (req, res) => res.type("text/plain").send(seo.robotsTxt(db, req)));
+app.get("/sitemap.xml", (req, res) => {
+  const updated = fs.existsSync(DATA_FILE) ? fs.statSync(DATA_FILE).mtime : new Date();
+  res.type("application/xml").send(seo.sitemapXml(db, req, updated));
+});
+app.get("/llms.txt", (req, res) => res.type("text/plain; charset=utf-8").send(seo.llmsTxt(db, req)));
+
 app.use(express.static(path.join(__dirname, "public"), { extensions: ["html"] }));
 
 app.get("/api/content", (_req, res) => res.json(db));

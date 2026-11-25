@@ -603,8 +603,8 @@ function fillSettings() {
   document.querySelectorAll("[data-settings-form] [name]").forEach((el) => {
     el.value = state.settings[el.name] ?? "";
   });
-  updateMapPreview();
   paintMaintenance();
+  document.dispatchEvent(new Event("balevi:settings-filled"));
 }
 
 // ---------- Bakım modu ----------
@@ -625,15 +625,6 @@ maintSwitch.addEventListener("click", async () => {
   });
 });
 
-function updateMapPreview() {
-  const q = $("#s-mapQuery").value || $("#s-address").value;
-  $("#map-preview").src = `https://www.google.com/maps?q=${encodeURIComponent(q)}&output=embed`;
-}
-let mapTimer;
-$("#s-mapQuery").addEventListener("input", () => {
-  clearTimeout(mapTimer);
-  mapTimer = setTimeout(updateMapPreview, 600);
-});
 
 document.querySelectorAll("[data-settings-form]").forEach((f) =>
   f.addEventListener("submit", async (e) => {
